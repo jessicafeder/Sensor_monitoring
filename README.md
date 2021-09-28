@@ -1,1 +1,3 @@
-# Sensor_monitoring
+# Sensor monitoring
+
+School assignment to monitor sensors of autonomous car.
