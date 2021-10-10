@@ -1,6 +1,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <ctype.h>
+#include <time.h>
 #define BUFLEN 2020
 
 //Prototypes
@@ -11,22 +12,48 @@ void setSensorValue(int sensor, int value);
 int getSensorValue(int sensor);
 unsigned int Sensors[20];
 
+void delay(int number_of_seconds)
+{
+    // Converting time into milli_seconds
+    int milli_seconds = 1000 * number_of_seconds;
+  
+    // Storing start time
+    clock_t start_time = clock();
+  
+    // looping till required time is not achieved
+    while (clock() < start_time + milli_seconds)
+        ;
+}
+
 void main(){
     printf("Program started.\n");
     printf("Loading data\n");
-    _dataLoader();
-    
-    printf("Sensor 102 is: %d\n", getSensorValue(102));
-    printf("Sensor 17 is: %d\n", getSensorValue(17));
+
+    while(1==1){
+        _dataLoader();
+        for (int i=0; i<20; i++){
+            printf("Data %d: %x\n", i, Sensors[i]);
+        }
+        printf("Sensor 1 is: %d\n", getSensorValue(1));
+        printf("Sensor 2 is: %d\n", getSensorValue(2));
+        delay(1);
+    }
 }
 
 void _dataLoader(){
     FILE *fp;
     char sensors[236];
     char buf[BUFLEN];
-    fp = fopen("sensors.txt", "r");
+    fp = fopen("sensor_data.txt", "r");
+    if (fp == NULL){
+        printf("Could not open file");
+       return;
+   }
 
     fgets(buf,BUFLEN,fp);
+
+    fclose(fp);
+
     //puts(buf);
     for(int i = 0; i < BUFLEN; i++)
     {
@@ -50,13 +77,13 @@ void setSensorValue(int sensor, int value)
     int val = 0;
     if(value == 1)
     {
-        val |= 1UL << bit;
+        Sensors[slot] |= 1UL << bit;
     }
     else
     {
-        val &= ~(1UL << bit);
+        Sensors[slot] &= ~(1UL << bit); 
     }
-    Sensors[slot] |= val;
+    
     //printf("Value: %d\n", val);
 }
 int getSensorValue(int sensor)
