@@ -32,7 +32,7 @@ void write_file() {
    for (int i = 0; i < 236; i++) {
        fprintf(fp, "%d", i);
        fprintf(fp, ";");
-//While looping, if random int is odd or even printing out true or false     
+//While looping, if random int is odd or even printing out true or false
         if (rand() % 2 == 0)
                 fprintf(fp, "true;");
             else
